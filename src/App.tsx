@@ -12,7 +12,6 @@ function App() {
     goFaceDown,
     goRevealFully,
     resetAll,
-    cardTransform,
     flipPointerHandlers,
   } = useCardFlip()
 
@@ -82,7 +81,7 @@ function App() {
             トランプ手書き & めくり
           </h1>
           <p className="mx-auto max-w-md text-sm text-emerald-200/75">
-            白いカードに描いて「伏せる」。裏面をドラッグするか「めくる（完全）」で表面を表示できます。
+            白いカードに描いて「伏せる」。端をドラッグして徐々にめくるか「めくる（完全）」で表面を表示できます。
           </p>
         </header>
 
@@ -90,7 +89,6 @@ function App() {
           <Card
             ref={canvasRef}
             flip={flip}
-            cardTransform={cardTransform}
             drawingEnabled={drawingEnabled}
             drawingPointerHandlers={drawingPointerHandlers}
             flipPointerHandlers={flipPointerHandlers}
