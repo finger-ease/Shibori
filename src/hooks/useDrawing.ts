@@ -1,8 +1,22 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  parseShareStateFromHash,
+  type Stroke,
+  replaceUrlShareHash,
+  renderStrokesToCanvas,
+} from '../drawingState'
+import {
+  type SharePageResult,
+  shareOrCopyPageUrl,
+} from '../shareUrl'
 import { CARD_HEIGHT, CARD_RADIUS, CARD_WIDTH } from '../constants'
 
 export type UseDrawingOptions = {
   enabled: boolean
+  canvasRef: React.RefObject<HTMLCanvasElement | null>
+  /** 共有 URL に fd（伏せ）を付与する。めくり後も true にして相手は伏せから開く */
+  shareFaceDown: boolean
+  shareUrlSync: boolean
   lineWidth?: number
   strokeStyle?: string
 }
@@ -18,10 +32,31 @@ function clipRoundRect(
   ctx.clip()
 }
 
+function finalizeStroke(flat: number[]): Stroke | null {
+  if (flat.length < 2) return null
+  if (flat.length === 2) {
+    return [flat[0], flat[1], flat[0] + 0.01, flat[1]]
+  }
+  return flat
+}
+
 export function useDrawing(options: UseDrawingOptions) {
-  const { enabled, lineWidth = 2.5, strokeStyle = '#0a0a0a' } = options
+  const {
+    enabled,
+    canvasRef,
+    shareFaceDown,
+    shareUrlSync,
+    lineWidth = 2.5,
+    strokeStyle = '#0a0a0a',
+  } = options
+
+  const [strokes, setStrokes] = useState<Stroke[]>(() => {
+    if (typeof window === 'undefined') return []
+    return parseShareStateFromHash(window.location.hash)?.strokes ?? []
+  })
+
   const isDrawingRef = useRef(false)
-  const lastPosRef = useRef<{ x: number; y: number } | null>(null)
+  const currentStrokeRef = useRef<number[]>([])
 
   const setupContext = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -33,15 +68,25 @@ export function useDrawing(options: UseDrawingOptions) {
     [lineWidth, strokeStyle],
   )
 
-  const clearCanvas = useCallback((canvas: HTMLCanvasElement | null) => {
+  const style = useMemo(
+    () => ({ lineWidth, strokeStyle }),
+    [lineWidth, strokeStyle],
+  )
+
+  useEffect(() => {
+    const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    ctx.save()
-    ctx.setTransform(1, 0, 0, 1, 0, 0)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.restore()
-  }, [])
+    const draw = () => renderStrokesToCanvas(canvas, strokes, style)
+    draw()
+    const ro = new ResizeObserver(draw)
+    ro.observe(canvas)
+    return () => ro.disconnect()
+  }, [canvasRef, strokes, style])
+
+  useEffect(() => {
+    if (!shareUrlSync) return
+    replaceUrlShareHash(strokes, shareFaceDown)
+  }, [strokes, shareFaceDown, shareUrlSync])
 
   /** ポインタをキャンバスの「ユーザー座標」に変換（DrawingCanvas の setTransform(dpr) と同じ論理空間） */
   const getLocalPoint = (
@@ -67,7 +112,7 @@ export function useDrawing(options: UseDrawingOptions) {
       if (!ctx) return
       const { x, y } = getLocalPoint(canvas, e.clientX, e.clientY)
       isDrawingRef.current = true
-      lastPosRef.current = { x, y }
+      currentStrokeRef.current = [x, y]
       ctx.save()
       clipRoundRect(ctx, CARD_WIDTH, CARD_HEIGHT, CARD_RADIUS)
       setupContext(ctx)
@@ -87,24 +132,31 @@ export function useDrawing(options: UseDrawingOptions) {
       const ctx = canvas.getContext('2d')
       if (!ctx) return
       const { x, y } = getLocalPoint(canvas, e.clientX, e.clientY)
-      const last = lastPosRef.current
-      if (!last) return
+      const cur = currentStrokeRef.current
+      const lastX = cur[cur.length - 2]
+      const lastY = cur[cur.length - 1]
+      if (lastX === undefined || lastY === undefined) return
+      cur.push(x, y)
       ctx.save()
       clipRoundRect(ctx, CARD_WIDTH, CARD_HEIGHT, CARD_RADIUS)
       setupContext(ctx)
       ctx.beginPath()
-      ctx.moveTo(last.x, last.y)
+      ctx.moveTo(lastX, lastY)
       ctx.lineTo(x, y)
       ctx.stroke()
       ctx.restore()
-      lastPosRef.current = { x, y }
     },
     [enabled, setupContext],
   )
 
-  const endStroke = useCallback(() => {
+  const commitStroke = useCallback(() => {
+    if (!isDrawingRef.current) return
     isDrawingRef.current = false
-    lastPosRef.current = null
+    const raw = currentStrokeRef.current
+    currentStrokeRef.current = []
+    const stroke = finalizeStroke(raw)
+    if (!stroke) return
+    setStrokes((prev) => [...prev, stroke])
   }, [])
 
   const handlePointerUp = useCallback(
@@ -114,17 +166,27 @@ export function useDrawing(options: UseDrawingOptions) {
       } catch {
         /* ignore */
       }
-      endStroke()
+      commitStroke()
     },
-    [endStroke],
+    [commitStroke],
   )
 
   const handlePointerLeave = useCallback(() => {
-    endStroke()
-  }, [endStroke])
+    commitStroke()
+  }, [commitStroke])
+
+  const clearCanvas = useCallback(() => {
+    setStrokes([])
+  }, [])
+
+  const sharePageUrl = useCallback((): Promise<SharePageResult> => {
+    return shareOrCopyPageUrl()
+  }, [])
 
   return {
+    strokes,
     clearCanvas,
+    sharePageUrl,
     pointerHandlers: {
       onPointerDown: handlePointerDown,
       onPointerMove: handlePointerMove,

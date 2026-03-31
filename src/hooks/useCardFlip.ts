@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 import { PIXELS_FOR_FULL_PEEL } from '../constants'
+import { parseShareStateFromHash } from '../drawingState'
 import type { AppPhase, PeelEdge } from '../types'
 
 export type CardFlipState = {
@@ -17,6 +18,20 @@ const initialFlipState: CardFlipState = {
   peelProgress: 1,
   peelEdge: 'bottom',
   transition: false,
+}
+
+const initialFlipFaceDown: CardFlipState = {
+  phase: 'faceDown',
+  peelProgress: 0,
+  peelEdge: 'bottom',
+  transition: false,
+}
+
+function readInitialFlipFromHash(): CardFlipState {
+  if (typeof window === 'undefined') return initialFlipState
+  const parsed = parseShareStateFromHash(window.location.hash)
+  if (parsed?.faceDown) return initialFlipFaceDown
+  return initialFlipState
 }
 
 function determinePeelEdge(
@@ -43,7 +58,7 @@ function determinePeelEdge(
 }
 
 export function useCardFlip() {
-  const [flip, setFlip] = useState<CardFlipState>(initialFlipState)
+  const [flip, setFlip] = useState<CardFlipState>(readInitialFlipFromHash)
   const dragStartRef = useRef<{ x: number; y: number } | null>(null)
 
   const goFaceDown = useCallback(() => {

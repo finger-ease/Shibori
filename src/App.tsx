@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { Card } from './components/Card'
 import { CardScene } from './components/CardScene'
 import { Controls } from './components/Controls'
@@ -16,21 +16,40 @@ function App() {
   } = useCardFlip()
 
   const drawingEnabled = flip.phase === 'drawing'
-  const { clearCanvas, pointerHandlers: drawingPointerHandlers } = useDrawing({
-    enabled: drawingEnabled,
-  })
+  const { clearCanvas, sharePageUrl, pointerHandlers: drawingPointerHandlers } =
+    useDrawing({
+      enabled: drawingEnabled,
+      canvasRef,
+      /** 伏せ・めくり後の共有は常に相手に伏せ状態で渡す */
+      shareFaceDown:
+        flip.phase === 'faceDown' || flip.phase === 'revealed',
+      shareUrlSync:
+        flip.phase === 'drawing' ||
+        flip.phase === 'faceDown' ||
+        flip.phase === 'revealed',
+    })
+
+  const [shareFeedback, setShareFeedback] = useState<
+    'idle' | 'copied' | 'shared'
+  >('idle')
+  const handleShareLink = useCallback(async () => {
+    const result = await sharePageUrl()
+    if (result === 'failed') return
+    setShareFeedback(result === 'shared' ? 'shared' : 'copied')
+    window.setTimeout(() => setShareFeedback('idle'), 2000)
+  }, [sharePageUrl])
 
   const handleFaceDown = useCallback(() => {
     goFaceDown()
   }, [goFaceDown])
 
   const handleReset = useCallback(() => {
-    clearCanvas(canvasRef.current)
+    clearCanvas()
     resetAll()
   }, [clearCanvas, resetAll])
 
   const handleClearDrawing = useCallback(() => {
-    clearCanvas(canvasRef.current)
+    clearCanvas()
   }, [clearCanvas])
 
   return (
@@ -97,12 +116,19 @@ function App() {
 
         <Controls
           showClearDrawing={flip.phase === 'drawing'}
-          showFaceDown={flip.phase === 'drawing'}
+          showCopyLink={
+            flip.phase === 'faceDown' || flip.phase === 'revealed'
+          }
+          shareFeedback={shareFeedback}
+          showFaceDown={
+            flip.phase === 'drawing' || flip.phase === 'revealed'
+          }
           showRevealFully={
             flip.phase === 'faceDown' || flip.phase === 'flipping'
           }
           showReset={flip.phase === 'revealed'}
           onClearDrawing={handleClearDrawing}
+          onShareLink={handleShareLink}
           onFaceDown={handleFaceDown}
           onRevealFully={goRevealFully}
           onReset={handleReset}

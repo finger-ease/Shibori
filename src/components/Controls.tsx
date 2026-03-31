@@ -1,9 +1,12 @@
 type ControlsProps = {
   onClearDrawing: () => void
+  onCopyLink: () => void | Promise<void>
   onFaceDown: () => void
   onRevealFully: () => void
   onReset: () => void
   showClearDrawing: boolean
+  showCopyLink: boolean
+  linkCopied: boolean
   showFaceDown: boolean
   showRevealFully: boolean
   showReset: boolean
@@ -11,10 +14,13 @@ type ControlsProps = {
 
 export function Controls({
   onClearDrawing,
+  onCopyLink,
   onFaceDown,
   onRevealFully,
   onReset,
   showClearDrawing,
+  showCopyLink,
+  linkCopied,
   showFaceDown,
   showRevealFully,
   showReset,
@@ -28,6 +34,15 @@ export function Controls({
           className="rounded-lg border-2 border-slate-500/60 bg-slate-900/80 px-6 py-3 font-semibold text-slate-200 shadow-md transition hover:bg-slate-800 active:scale-[0.98]"
         >
           リセット
+        </button>
+      )}
+      {showCopyLink && (
+        <button
+          type="button"
+          onClick={onCopyLink}
+          className="rounded-lg border-2 border-emerald-700/50 bg-emerald-950/80 px-6 py-3 font-semibold text-emerald-100 shadow-md transition hover:bg-emerald-900/80 active:scale-[0.98]"
+        >
+          {linkCopied ? 'コピーしました' : 'リンクをコピー'}
         </button>
       )}
       {showFaceDown && (
