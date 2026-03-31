@@ -100,7 +100,7 @@ function App() {
             Shibori
           </h1>
           <p className="mx-auto max-w-md text-sm text-emerald-200/75">
-            好きな文字や絵を描いて、バカラのようにしぼろう！
+            トランプに好きな文字や絵を描いて、バカラのようにしぼろう！
           </p>
         </header>
 
