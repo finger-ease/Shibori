@@ -10,7 +10,6 @@ function App() {
   const {
     flip,
     goFaceDown,
-    goRevealFully,
     resetAll,
     flipPointerHandlers,
   } = useCardFlip()
@@ -140,14 +139,10 @@ function App() {
           showFaceDown={
             flip.phase === 'drawing' || flip.phase === 'revealed'
           }
-          showRevealFully={
-            flip.phase === 'faceDown' || flip.phase === 'flipping'
-          }
           showReset={flip.phase === 'revealed'}
           onClearDrawing={handleClearDrawing}
           onShareLink={handleShareLink}
           onFaceDown={handleFaceDown}
-          onRevealFully={goRevealFully}
           onReset={handleReset}
         />
       </div>

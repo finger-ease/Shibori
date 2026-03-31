@@ -6,13 +6,11 @@ type ControlsProps = {
   canRedo: boolean
   onShareLink: () => void | Promise<void>
   onFaceDown: () => void
-  onRevealFully: () => void
   onReset: () => void
   showClearDrawing: boolean
   showCopyLink: boolean
   shareFeedback: 'idle' | 'copied' | 'shared'
   showFaceDown: boolean
-  showRevealFully: boolean
   showReset: boolean
 }
 
@@ -94,13 +92,11 @@ export function Controls({
   canRedo,
   onShareLink,
   onFaceDown,
-  onRevealFully,
   onReset,
   showClearDrawing,
   showCopyLink,
   shareFeedback,
   showFaceDown,
-  showRevealFully,
   showReset,
 }: ControlsProps) {
   const shareSuccess = shareFeedback !== 'idle'
@@ -180,15 +176,6 @@ export function Controls({
           className="rounded-lg border-2 border-amber-900/40 bg-gradient-to-b from-amber-700 to-amber-900 px-8 py-3 font-semibold text-amber-50 shadow-lg transition hover:brightness-110 active:scale-[0.98]"
         >
           伏せる
-        </button>
-      )}
-      {showRevealFully && (
-        <button
-          type="button"
-          onClick={onRevealFully}
-          className="rounded-lg border-2 border-emerald-900/50 bg-gradient-to-b from-emerald-600 to-emerald-900 px-8 py-3 font-semibold text-emerald-50 shadow-lg transition hover:brightness-110 active:scale-[0.98]"
-        >
-          めくる
         </button>
       )}
     </div>

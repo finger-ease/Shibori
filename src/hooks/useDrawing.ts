@@ -10,6 +10,7 @@ import {
   shareOrCopyPageUrl,
 } from '../shareUrl'
 import { CARD_HEIGHT, CARD_RADIUS, CARD_WIDTH } from '../constants'
+import { usePreventNativeTouchScroll } from './usePreventNativeTouchScroll'
 
 export type UseDrawingOptions = {
   enabled: boolean
@@ -102,6 +103,8 @@ export function useDrawing(options: UseDrawingOptions) {
     if (!shareUrlSync) return
     replaceUrlShareHash(strokes, shareFaceDown)
   }, [strokes, shareFaceDown, shareUrlSync])
+
+  usePreventNativeTouchScroll(canvasRef, enabled)
 
   /** ポインタをキャンバスの「ユーザー座標」に変換（DrawingCanvas の setTransform(dpr) と同じ論理空間） */
   const getLocalPoint = (

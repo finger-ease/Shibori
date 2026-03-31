@@ -1,7 +1,8 @@
-import { forwardRef } from 'react'
+import { forwardRef, useRef } from 'react'
 import { CARD_HEIGHT, CARD_RADIUS, CARD_WIDTH } from '../constants'
 import type { CardFlipState } from '../hooks/useCardFlip'
 import type { PeelEdge } from '../types'
+import { usePreventNativeTouchScroll } from '../hooks/usePreventNativeTouchScroll'
 import { CardBack } from './CardBack'
 import { CardFront } from './CardFront'
 
@@ -414,6 +415,8 @@ export const Card = forwardRef<HTMLCanvasElement, CardProps>(function Card(
 ) {
   const { phase, peelProgress, peelEdge, transition } = flip
   const flipInteraction = phase === 'faceDown' || phase === 'flipping'
+  const flipTouchTargetRef = useRef<HTMLDivElement>(null)
+  usePreventNativeTouchScroll(flipTouchTargetRef, flipInteraction)
 
   const backClipPath = computeBackClipPath(peelEdge, peelProgress)
   const transitionStyle = transition
@@ -431,6 +434,7 @@ export const Card = forwardRef<HTMLCanvasElement, CardProps>(function Card(
       }}
     >
       <div
+        ref={flipTouchTargetRef}
         role="presentation"
         className="relative h-full w-full"
         style={{

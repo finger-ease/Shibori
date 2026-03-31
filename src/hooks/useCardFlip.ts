@@ -85,19 +85,6 @@ export function useCardFlip() {
     })
   }, [])
 
-  const goRevealFully = useCallback(() => {
-    dragStartRef.current = null
-    setFlip((s) => {
-      if (s.phase !== 'faceDown' && s.phase !== 'flipping') return s
-      return {
-        phase: 'revealed',
-        peelProgress: 1,
-        peelEdge: s.peelEdge,
-        transition: true,
-      }
-    })
-  }, [])
-
   const resetAll = useCallback(() => {
     dragStartRef.current = null
     setFlip(initialFlipState)
@@ -200,7 +187,6 @@ export function useCardFlip() {
   return {
     flip,
     goFaceDown,
-    goRevealFully,
     resetAll,
     flipPointerHandlers: {
       onPointerDown: handleFlipPointerDown,
