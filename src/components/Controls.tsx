@@ -91,6 +91,15 @@ export function Controls({
           )}
         </button>
       )}
+      {showReset && (
+        <button
+          type="button"
+          onClick={onReset}
+          className="rounded-lg border-2 border-slate-700 bg-slate-800/90 px-8 py-3 font-semibold text-slate-100 shadow-lg transition hover:bg-slate-700 active:scale-[0.98]"
+        >
+          リセット
+        </button>
+      )}
       {showFaceDown && (
         <button
           type="button"
@@ -107,15 +116,6 @@ export function Controls({
           className="rounded-lg border-2 border-emerald-900/50 bg-gradient-to-b from-emerald-600 to-emerald-900 px-8 py-3 font-semibold text-emerald-50 shadow-lg transition hover:brightness-110 active:scale-[0.98]"
         >
           めくる
-        </button>
-      )}
-      {showReset && (
-        <button
-          type="button"
-          onClick={onReset}
-          className="rounded-lg border-2 border-slate-700 bg-slate-800/90 px-8 py-3 font-semibold text-slate-100 shadow-lg transition hover:bg-slate-700 active:scale-[0.98]"
-        >
-          リセット
         </button>
       )}
     </div>
