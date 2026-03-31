@@ -40,7 +40,22 @@ function determinePeelEdge(
   w: number,
   h: number,
 ): PeelEdge {
-  const dists: Record<PeelEdge, number> = {
+  const normTop = localY / h
+  const normBottom = 1 - localY / h
+  const normLeft = localX / w
+  const normRight = 1 - localX / w
+
+  const cornerThreshold = 0.3
+  if (normTop < cornerThreshold && normLeft < cornerThreshold)
+    return 'top-left'
+  if (normTop < cornerThreshold && normRight < cornerThreshold)
+    return 'top-right'
+  if (normBottom < cornerThreshold && normLeft < cornerThreshold)
+    return 'bottom-left'
+  if (normBottom < cornerThreshold && normRight < cornerThreshold)
+    return 'bottom-right'
+
+  const dists: Record<string, number> = {
     top: localY,
     bottom: h - localY,
     left: localX,
@@ -118,19 +133,35 @@ export function useCardFlip() {
     setFlip((s) => {
       if (s.phase !== 'flipping') return s
 
+      const dx = e.clientX - start.x
+      const dy = e.clientY - start.y
+      const SQRT2_INV = 1 / Math.SQRT2
+
       let dist: number
       switch (s.peelEdge) {
         case 'bottom':
-          dist = start.y - e.clientY
+          dist = -dy
           break
         case 'top':
-          dist = e.clientY - start.y
+          dist = dy
           break
         case 'left':
-          dist = e.clientX - start.x
+          dist = dx
           break
         case 'right':
-          dist = start.x - e.clientX
+          dist = -dx
+          break
+        case 'bottom-right':
+          dist = (-dx + -dy) * SQRT2_INV
+          break
+        case 'top-left':
+          dist = (dx + dy) * SQRT2_INV
+          break
+        case 'top-right':
+          dist = (-dx + dy) * SQRT2_INV
+          break
+        case 'bottom-left':
+          dist = (dx + -dy) * SQRT2_INV
           break
       }
 
