@@ -16,6 +16,7 @@ export type UseDrawingOptions = {
   canvasRef: React.RefObject<HTMLCanvasElement | null>
   /** 共有 URL に fd（伏せ）を付与する。めくり後も true にして相手は伏せから開く */
   shareFaceDown: boolean
+  /** false の間はストローク変更で URL を更新しない（伏せるまで） */
   shareUrlSync: boolean
   lineWidth?: number
   strokeStyle?: string
@@ -177,6 +178,7 @@ export function useDrawing(options: UseDrawingOptions) {
 
   const clearCanvas = useCallback(() => {
     setStrokes([])
+    replaceUrlShareHash([], false)
   }, [])
 
   const sharePageUrl = useCallback((): Promise<SharePageResult> => {

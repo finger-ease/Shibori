@@ -22,10 +22,13 @@ function App() {
       canvasRef,
       /** 伏せ・めくり後の共有は常に相手に伏せ状態で渡す */
       shareFaceDown:
-        flip.phase === 'faceDown' || flip.phase === 'revealed',
-      shareUrlSync:
-        flip.phase === 'drawing' ||
         flip.phase === 'faceDown' ||
+        flip.phase === 'flipping' ||
+        flip.phase === 'revealed',
+      /** 描画中は URL を書き換えず、伏せたあとから同期 */
+      shareUrlSync:
+        flip.phase === 'faceDown' ||
+        flip.phase === 'flipping' ||
         flip.phase === 'revealed',
     })
 
@@ -95,7 +98,7 @@ function App() {
       />
 
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-        <header className="px-4 pt-8 text-center">
+        <header className="px-6 pt-8 text-center sm:px-10 md:px-14">
           <h1 className="mb-2 text-2xl font-bold tracking-tight text-emerald-100/95 drop-shadow-md md:text-3xl">
             Shibori
           </h1>
@@ -117,7 +120,9 @@ function App() {
         <Controls
           showClearDrawing={flip.phase === 'drawing'}
           showCopyLink={
-            flip.phase === 'faceDown' || flip.phase === 'revealed'
+            flip.phase === 'faceDown' ||
+            flip.phase === 'flipping' ||
+            flip.phase === 'revealed'
           }
           shareFeedback={shareFeedback}
           showFaceDown={
