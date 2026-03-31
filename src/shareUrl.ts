@@ -23,7 +23,7 @@ export async function shareOrCopyPageUrl(): Promise<SharePageResult> {
 
   if (isMobileDevice() && typeof navigator.share === 'function') {
     try {
-      await navigator.share({ url, title, text: title })
+      await navigator.share({ url, title })
       return 'shared'
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
