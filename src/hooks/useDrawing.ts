@@ -41,6 +41,16 @@ function finalizeStroke(flat: number[]): Stroke | null {
   return flat
 }
 
+function cloneStrokes(strokes: Stroke[]): Stroke[] {
+  return strokes.map((s) => s.slice())
+}
+
+type DrawingHistory = {
+  past: Stroke[][]
+  present: Stroke[]
+  future: Stroke[][]
+}
+
 export function useDrawing(options: UseDrawingOptions) {
   const {
     enabled,
@@ -51,10 +61,14 @@ export function useDrawing(options: UseDrawingOptions) {
     strokeStyle = '#0a0a0a',
   } = options
 
-  const [strokes, setStrokes] = useState<Stroke[]>(() => {
-    if (typeof window === 'undefined') return []
-    return parseShareStateFromHash(window.location.hash)?.strokes ?? []
+  const [history, setHistory] = useState<DrawingHistory>(() => {
+    const initial =
+      typeof window === 'undefined'
+        ? []
+        : (parseShareStateFromHash(window.location.hash)?.strokes ?? [])
+    return { past: [], present: cloneStrokes(initial), future: [] }
   })
+  const strokes = history.present
 
   const isDrawingRef = useRef(false)
   const currentStrokeRef = useRef<number[]>([])
@@ -157,7 +171,11 @@ export function useDrawing(options: UseDrawingOptions) {
     currentStrokeRef.current = []
     const stroke = finalizeStroke(raw)
     if (!stroke) return
-    setStrokes((prev) => [...prev, stroke])
+    setHistory((h) => ({
+      past: [...h.past, cloneStrokes(h.present)],
+      present: [...h.present, stroke],
+      future: [],
+    }))
   }, [])
 
   const handlePointerUp = useCallback(
@@ -176,10 +194,78 @@ export function useDrawing(options: UseDrawingOptions) {
     commitStroke()
   }, [commitStroke])
 
+  const undo = useCallback(() => {
+    setHistory((h) => {
+      if (h.past.length === 0) return h
+      const prev = h.past[h.past.length - 1]
+      return {
+        past: h.past.slice(0, -1),
+        present: cloneStrokes(prev),
+        future: [cloneStrokes(h.present), ...h.future],
+      }
+    })
+  }, [])
+
+  const redo = useCallback(() => {
+    setHistory((h) => {
+      if (h.future.length === 0) return h
+      const next = h.future[0]
+      return {
+        past: [...h.past, cloneStrokes(h.present)],
+        present: cloneStrokes(next),
+        future: h.future.slice(1),
+      }
+    })
+  }, [])
+
   const clearCanvas = useCallback(() => {
-    setStrokes([])
+    setHistory((h) => {
+      if (h.present.length === 0 && h.future.length === 0) {
+        return h
+      }
+      return {
+        past: [...h.past, cloneStrokes(h.present)],
+        present: [],
+        future: [],
+      }
+    })
     replaceUrlShareHash([], false)
   }, [])
+
+  const canUndo = history.past.length > 0
+  const canRedo = history.future.length > 0
+
+  const canUndoRef = useRef(canUndo)
+  const canRedoRef = useRef(canRedo)
+  canUndoRef.current = canUndo
+  canRedoRef.current = canRedo
+
+  useEffect(() => {
+    if (!enabled) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey
+      if (!mod) return
+      if (e.key === 'z' || e.key === 'Z') {
+        if (e.shiftKey) {
+          if (!canRedoRef.current) return
+          e.preventDefault()
+          redo()
+        } else {
+          if (!canUndoRef.current) return
+          e.preventDefault()
+          undo()
+        }
+        return
+      }
+      if (e.key === 'y' || e.key === 'Y') {
+        if (!canRedoRef.current) return
+        e.preventDefault()
+        redo()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [enabled, undo, redo])
 
   const sharePageUrl = useCallback((): Promise<SharePageResult> => {
     return shareOrCopyPageUrl()
@@ -188,6 +274,10 @@ export function useDrawing(options: UseDrawingOptions) {
   return {
     strokes,
     clearCanvas,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
     sharePageUrl,
     pointerHandlers: {
       onPointerDown: handlePointerDown,

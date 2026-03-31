@@ -16,8 +16,15 @@ function App() {
   } = useCardFlip()
 
   const drawingEnabled = flip.phase === 'drawing'
-  const { clearCanvas, sharePageUrl, pointerHandlers: drawingPointerHandlers } =
-    useDrawing({
+  const {
+    clearCanvas,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    sharePageUrl,
+    pointerHandlers: drawingPointerHandlers,
+  } = useDrawing({
       enabled: drawingEnabled,
       canvasRef,
       /** 伏せ・めくり後の共有は常に相手に伏せ状態で渡す */
@@ -119,6 +126,10 @@ function App() {
 
         <Controls
           showClearDrawing={flip.phase === 'drawing'}
+          onUndo={undo}
+          onRedo={redo}
+          canUndo={canUndo}
+          canRedo={canRedo}
           showCopyLink={
             flip.phase === 'faceDown' ||
             flip.phase === 'flipping' ||

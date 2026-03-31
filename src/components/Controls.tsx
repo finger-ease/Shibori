@@ -1,5 +1,9 @@
 type ControlsProps = {
   onClearDrawing: () => void
+  onUndo: () => void
+  onRedo: () => void
+  canUndo: boolean
+  canRedo: boolean
   onShareLink: () => void | Promise<void>
   onFaceDown: () => void
   onRevealFully: () => void
@@ -44,8 +48,50 @@ function CheckGlyph({ className }: { className?: string }) {
   )
 }
 
+/** Heroicons 系の U ターン左矢印（戻す） */
+function UndoGlyph({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.25}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 6 6v0" />
+    </svg>
+  )
+}
+
+/** U ターン右矢印（やり直し） */
+function RedoGlyph({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.25}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0-6 6v0" />
+    </svg>
+  )
+}
+
 export function Controls({
   onClearDrawing,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
   onShareLink,
   onFaceDown,
   onRevealFully,
@@ -68,13 +114,40 @@ export function Controls({
   return (
     <div className="relative z-10 flex flex-wrap items-center justify-center gap-4 px-4 pb-10 pt-2">
       {showClearDrawing && (
-        <button
-          type="button"
-          onClick={onClearDrawing}
-          className="rounded-lg border-2 border-slate-500/60 bg-slate-900/80 px-6 py-3 font-semibold text-slate-200 shadow-md transition hover:bg-slate-800 active:scale-[0.98]"
+        <div
+          role="group"
+          aria-label="描画の操作"
+          className="flex overflow-hidden rounded-xl border-2 border-slate-500/60 bg-slate-900/95 shadow-md divide-x divide-slate-600/55"
         >
-          リセット
-        </button>
+          <button
+            type="button"
+            onClick={onUndo}
+            disabled={!canUndo}
+            aria-label="元に戻す"
+            title="元に戻す（⌘Z / Ctrl+Z）"
+            className="flex h-12 w-12 shrink-0 items-center justify-center text-slate-200 transition hover:bg-slate-800/95 active:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <UndoGlyph className="h-6 w-6" />
+          </button>
+          <button
+            type="button"
+            onClick={onRedo}
+            disabled={!canRedo}
+            aria-label="やり直す"
+            title="やり直す（⌘⇧Z / Ctrl+Y）"
+            className="flex h-12 w-12 shrink-0 items-center justify-center text-slate-200 transition hover:bg-slate-800/95 active:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <RedoGlyph className="h-6 w-6" />
+          </button>
+          <button
+            type="button"
+            onClick={onClearDrawing}
+            title="すべて消去"
+            className="min-w-[5rem] px-5 py-3 text-center font-semibold text-slate-200 transition hover:bg-slate-800/95 active:bg-slate-800"
+          >
+            リセット
+          </button>
+        </div>
       )}
       {showCopyLink && (
         <button
