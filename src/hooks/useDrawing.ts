@@ -232,6 +232,12 @@ export function useDrawing(options: UseDrawingOptions) {
     replaceUrlShareHash([], false)
   }, [])
 
+  /** 伏せ／めくり後の「全体リセット」用。undo 用の past / future も含めて消す */
+  const clearDrawingHistory = useCallback(() => {
+    setHistory({ past: [], present: [], future: [] })
+    replaceUrlShareHash([], false)
+  }, [])
+
   const canUndo = history.past.length > 0
   const canRedo = history.future.length > 0
 
@@ -274,6 +280,7 @@ export function useDrawing(options: UseDrawingOptions) {
   return {
     strokes,
     clearCanvas,
+    clearDrawingHistory,
     undo,
     redo,
     canUndo,

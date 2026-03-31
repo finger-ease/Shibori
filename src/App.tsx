@@ -18,6 +18,7 @@ function App() {
   const drawingEnabled = flip.phase === 'drawing'
   const {
     clearCanvas,
+    clearDrawingHistory,
     undo,
     redo,
     canUndo,
@@ -54,9 +55,9 @@ function App() {
   }, [goFaceDown])
 
   const handleReset = useCallback(() => {
-    clearCanvas()
+    clearDrawingHistory()
     resetAll()
-  }, [clearCanvas, resetAll])
+  }, [clearDrawingHistory, resetAll])
 
   const handleClearDrawing = useCallback(() => {
     clearCanvas()
