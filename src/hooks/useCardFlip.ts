@@ -58,7 +58,7 @@ export function useCardFlip() {
   const goRevealFully = useCallback(() => {
     dragStartRef.current = null
     setFlip((s) => {
-      if (s.phase !== 'faceDown') return s
+      if (s.phase !== 'faceDown' && s.phase !== 'flipping') return s
       return {
         phase: 'revealed',
         peelProgress: 1,

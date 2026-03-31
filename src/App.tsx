@@ -98,7 +98,9 @@ function App() {
         <Controls
           showClearDrawing={flip.phase === 'drawing'}
           showFaceDown={flip.phase === 'drawing'}
-          showRevealFully={flip.phase === 'faceDown'}
+          showRevealFully={
+            flip.phase === 'faceDown' || flip.phase === 'flipping'
+          }
           showReset={flip.phase === 'revealed'}
           onClearDrawing={handleClearDrawing}
           onFaceDown={handleFaceDown}
