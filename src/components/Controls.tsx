@@ -142,10 +142,10 @@ export function Controls({
           <button
             type="button"
             onClick={onClearDrawing}
-            title="すべて消去"
+            title="クリア"
             className="min-w-[5rem] px-5 py-3 text-center font-semibold text-slate-200 transition hover:bg-slate-800/95 active:bg-slate-800"
           >
-            リセット
+            クリア
           </button>
         </div>
       )}
