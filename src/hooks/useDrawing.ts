@@ -43,14 +43,15 @@ export function useDrawing(options: UseDrawingOptions) {
     ctx.restore()
   }, [])
 
+  /** ポインタをキャンバスの「ユーザー座標」に変換（DrawingCanvas の setTransform(dpr) と同じ論理空間） */
   const getLocalPoint = (
     canvas: HTMLCanvasElement,
     clientX: number,
     clientY: number,
   ) => {
     const rect = canvas.getBoundingClientRect()
-    const scaleX = canvas.width / rect.width
-    const scaleY = canvas.height / rect.height
+    const scaleX = CARD_WIDTH / rect.width
+    const scaleY = CARD_HEIGHT / rect.height
     return {
       x: (clientX - rect.left) * scaleX,
       y: (clientY - rect.top) * scaleY,
