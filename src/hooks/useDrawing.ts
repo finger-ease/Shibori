@@ -243,8 +243,10 @@ export function useDrawing(options: UseDrawingOptions) {
 
   const canUndoRef = useRef(canUndo)
   const canRedoRef = useRef(canRedo)
-  canUndoRef.current = canUndo
-  canRedoRef.current = canRedo
+  useEffect(() => {
+    canUndoRef.current = canUndo
+    canRedoRef.current = canRedo
+  }, [canUndo, canRedo])
 
   useEffect(() => {
     if (!enabled) return
