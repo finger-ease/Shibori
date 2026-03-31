@@ -78,10 +78,10 @@ function App() {
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
         <header className="px-4 pt-8 text-center">
           <h1 className="mb-2 text-2xl font-bold tracking-tight text-emerald-100/95 drop-shadow-md md:text-3xl">
-            トランプ手書き & めくり
+            Shibori
           </h1>
           <p className="mx-auto max-w-md text-sm text-emerald-200/75">
-            白いカードに描いて「伏せる」。端をドラッグして徐々にめくるか「めくる（完全）」で表面を表示できます。
+            好きな文字や絵を描いて、バカラのようにしぼろう！
           </p>
         </header>
 

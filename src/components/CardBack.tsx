@@ -39,14 +39,6 @@ export function CardBack() {
             'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 60%)',
         }}
       />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div
-          className="rounded-full border-2 border-amber-100/50 bg-amber-50/10 px-6 py-3 text-sm font-semibold tracking-widest text-amber-100/90 shadow-md"
-          style={{ fontFamily: 'Georgia, serif' }}
-        >
-          BACCARA
-        </div>
-      </div>
     </div>
   )
 }

@@ -27,7 +27,7 @@ export function Controls({
           onClick={onClearDrawing}
           className="rounded-lg border-2 border-slate-500/60 bg-slate-900/80 px-6 py-3 font-semibold text-slate-200 shadow-md transition hover:bg-slate-800 active:scale-[0.98]"
         >
-          描画をクリア
+          リセット
         </button>
       )}
       {showFaceDown && (
@@ -45,7 +45,7 @@ export function Controls({
           onClick={onRevealFully}
           className="rounded-lg border-2 border-emerald-900/50 bg-gradient-to-b from-emerald-600 to-emerald-900 px-8 py-3 font-semibold text-emerald-50 shadow-lg transition hover:brightness-110 active:scale-[0.98]"
         >
-          めくる（完全）
+          めくる
         </button>
       )}
       {showReset && (

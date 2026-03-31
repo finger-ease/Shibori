@@ -55,7 +55,7 @@ export const DrawingCanvas = forwardRef<HTMLCanvasElement, DrawingCanvasProps>(
           cursor: enabled ? 'crosshair' : 'default',
           opacity: 1,
         }}
-        aria-label="手書きキャンバス"
+        aria-label="トランプ表面"
         {...pointerHandlers}
       />
     )
