@@ -40,8 +40,8 @@ export function getPeelFrame(edge: PeelEdge): PeelFrame {
       return {
         peelDir: norm({ x: 0, y: -1 }),
         foldDir: norm({ x: 1, y: 0 }),
-        foldStart: HH,
-        foldEnd: -HH,
+        foldStart: -HH,
+        foldEnd: HH,
       }
     case 'left':
       return {
@@ -54,8 +54,8 @@ export function getPeelFrame(edge: PeelEdge): PeelFrame {
       return {
         peelDir: norm({ x: -1, y: 0 }),
         foldDir: norm({ x: 0, y: 1 }),
-        foldStart: HW,
-        foldEnd: -HW,
+        foldStart: -HW,
+        foldEnd: HW,
       }
     case 'bottom-right': {
       const d = norm({ x: -1, y: 1 })
