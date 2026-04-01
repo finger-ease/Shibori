@@ -1,5 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
-import { PIXELS_FOR_FULL_PEEL } from '../constants'
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  PIXELS_FOR_FULL_PEEL,
+} from '../constants'
 import { parseShareStateFromHash } from '../drawingState'
 import type { AppPhase, PeelEdge } from '../types'
 
@@ -45,7 +49,8 @@ function determinePeelEdge(
   const normLeft = localX / w
   const normRight = 1 - localX / w
 
-  const cornerThreshold = 0.3
+  /** カード短辺に対する割合（四隅の斜めめくりの当たり範囲） */
+  const cornerThreshold = 0.38
   if (normTop < cornerThreshold && normLeft < cornerThreshold)
     return 'top-left'
   if (normTop < cornerThreshold && normRight < cornerThreshold)
@@ -101,7 +106,12 @@ export function useCardFlip() {
 
       const localX = e.clientX - rect.left
       const localY = e.clientY - rect.top
-      const peelEdge = determinePeelEdge(localX, localY, rect.width, rect.height)
+      /** 伏せ／めくり UI はカードより大きいので、座標をカード矩形上に射影してから辺・角を決める */
+      const padX = (rect.width - CARD_WIDTH) / 2
+      const padY = (rect.height - CARD_HEIGHT) / 2
+      const cardX = Math.max(0, Math.min(CARD_WIDTH, localX - padX))
+      const cardY = Math.max(0, Math.min(CARD_HEIGHT, localY - padY))
+      const peelEdge = determinePeelEdge(cardX, cardY, CARD_WIDTH, CARD_HEIGHT)
 
       setFlip({
         phase: 'flipping',
