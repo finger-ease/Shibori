@@ -1,52 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="felt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1e4d32"/>
-      <stop offset="100%" stop-color="#0f2a1c"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a4a2e"/>
+      <stop offset="100%" stop-color="#0d2818"/>
     </linearGradient>
-    <linearGradient id="cardBack" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#c0392b"/>
-      <stop offset="100%" stop-color="#922b21"/>
+    <linearGradient id="card" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#5a1a1a"/>
+      <stop offset="40%" stop-color="#6b1a1a"/>
+      <stop offset="70%" stop-color="#4a1215"/>
+      <stop offset="100%" stop-color="#3a0e10"/>
     </linearGradient>
-    <clipPath id="roundClip">
-      <circle cx="32" cy="32" r="30"/>
+    <linearGradient id="cardShine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.08"/>
+      <stop offset="40%" stop-color="#fff" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8e0d8"/>
+      <stop offset="100%" stop-color="#c8c0b8"/>
+    </linearGradient>
+    <pattern id="diamond" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="none"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#fff" stroke-opacity="0.06" stroke-width="0.6"/>
+      <line x1="0" y1="0" x2="8" y2="0" stroke="#fff" stroke-opacity="0.06" stroke-width="0.6"/>
+    </pattern>
+    <clipPath id="cardClip">
+      <path d="M14 8 L50 8 L50 44 Q50 48 46 52 L42 56 L14 56 Z"/>
     </clipPath>
   </defs>
 
-  <!-- Green felt circle -->
-  <circle cx="32" cy="32" r="30" fill="url(#felt)"/>
+  <rect width="64" height="64" fill="url(#bg)"/>
 
-  <g clip-path="url(#roundClip)">
-    <!-- Card back (red, flat underneath — visible through peel) -->
-    <rect x="16" y="8" width="32" height="48" rx="2.5" fill="url(#cardBack)" opacity="0.5"/>
-
-    <!-- Card face (white, slightly tilted to hint at squeeze) -->
-    <g transform="rotate(-3, 32, 32)">
-      <rect x="16" y="8" width="32" height="48" rx="2.5" fill="#fff"/>
-      <rect x="16" y="8" width="32" height="48" rx="2.5" fill="none" stroke="#d5d0c4" stroke-width="0.7"/>
-
-      <!-- Spade pip (large, centered) -->
-      <g transform="translate(32, 30)" fill="#1a1a2e">
-        <path d="M0 -10 C0 -10 -9 -1 -9 4 C-9 7.2 -6.5 9 -4 9 C-2 9 -0.8 7.8 0 6.4 C0.8 7.8 2 9 4 9 C6.5 9 9 7.2 9 4 C9 -1 0 -10 0 -10 Z"/>
-        <path d="M-1.5 7 L-2.2 12 L2.2 12 L1.5 7 Z"/>
-      </g>
-
-      <!-- "A" top-left -->
-      <text x="19.5" y="18" font-family="Georgia, 'Times New Roman', serif" font-size="9" font-weight="bold" fill="#1a1a2e">A</text>
-      <!-- Mini spade top-left -->
-      <g transform="translate(20.5, 20)" fill="#1a1a2e">
-        <path d="M0 -3.5 C0 -3.5 -3 -0.3 -3 1.4 C-3 2.5 -2.2 3 -1.3 3 C-0.7 3 -0.3 2.6 0 2.2 C0.3 2.6 0.7 3 1.3 3 C2.2 3 3 2.5 3 1.4 C3 -0.3 0 -3.5 0 -3.5 Z"/>
-      </g>
-    </g>
-
-    <!-- Peeled corner (bottom-left) — the squeeze reveal -->
-    <path d="M16 44 Q16 56 16 56 L30 56 Z" fill="url(#cardBack)"/>
-    <path d="M16 44 Q16 56 16 56 L30 56 Z" fill="none" stroke="#7b241c" stroke-width="0.5"/>
-    <!-- Curl shadow -->
-    <path d="M16 44 L30 56 L25 54 L14 46 Z" fill="#000" opacity="0.15"/>
+  <g clip-path="url(#cardClip)">
+    <rect x="14" y="8" width="36" height="48" rx="2" fill="url(#card)"/>
+    <rect x="14" y="8" width="36" height="48" rx="2" fill="url(#diamond)"/>
+    <rect x="14" y="8" width="36" height="48" rx="2" fill="url(#cardShine)"/>
   </g>
 
-  <!-- Wooden rail ring -->
-  <circle cx="32" cy="32" r="30" fill="none" stroke="#5c3d2e" stroke-width="2.5"/>
-  <circle cx="32" cy="32" r="28.8" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.1"/>
+  <path d="M14 8 L50 8 L50 44 Q50 48 46 52 L42 56 L14 56 Z" fill="none" stroke="#2a0a0c" stroke-width="2.2" stroke-linejoin="round"/>
+  <rect x="17" y="11" width="30" height="42" rx="1" fill="none" stroke="#5a2020" stroke-width="0.8" stroke-opacity="0.5" clip-path="url(#cardClip)"/>
+
+  <path d="M42 56 L42 50 Q42 46 46 46 L50 44 Q50 48 46 52 Z" fill="url(#fold)"/>
+  <path d="M42 56 L42 50 Q42 46 46 46 L50 44" fill="none" stroke="#2a0a0c" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M43 54 L43 50.5 Q43 47 46.5 47 L49 45.5" fill="none" stroke="#000" stroke-opacity="0.15" stroke-width="2"/>
 </svg>
