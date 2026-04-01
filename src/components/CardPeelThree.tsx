@@ -137,7 +137,7 @@ function FitOrthoCamera() {
   const M = PEEL_VIEW_MARGIN
   useFrame(() => {
     if (!(camera instanceof THREE.OrthographicCamera)) return
-    /** カード中心原点のまま、はみ出し分を含めた矩形をそのまま写す */
+    /** カード中心を維持し、はみ出したメッシュ全体が収まる視野 */
     camera.left = -(CARD_WIDTH / 2 + M)
     camera.right = CARD_WIDTH / 2 + M
     camera.top = CARD_HEIGHT / 2 + M

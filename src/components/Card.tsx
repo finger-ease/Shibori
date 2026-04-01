@@ -58,7 +58,7 @@ export const Card = forwardRef<HTMLCanvasElement, CardProps>(function Card(
 
   return (
     <div
-      className="relative mx-auto"
+      className="relative mx-auto shrink-0"
       style={{
         width: outerW,
         height: outerH,
@@ -75,8 +75,10 @@ export const Card = forwardRef<HTMLCanvasElement, CardProps>(function Card(
         }}
       >
         <div
-          className="absolute inset-0"
+          className="absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2"
           style={{
+            width: CARD_WIDTH,
+            height: CARD_HEIGHT,
             visibility: showDomFront ? 'visible' : 'hidden',
             pointerEvents: showDomFront ? 'auto' : 'none',
           }}
