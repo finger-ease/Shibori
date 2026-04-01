@@ -20,4 +20,11 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    files: ['src/components/CardPeelThree.tsx'],
+    rules: {
+      /** Three.js: uniforms / CanvasTexture.needsUpdate / camera frustum */
+      'react-hooks/immutability': 'off',
+    },
+  },
 ])
