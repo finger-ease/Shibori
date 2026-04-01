@@ -1,10 +1,5 @@
 import { forwardRef, useCallback, useRef, useState } from 'react'
-import {
-  CARD_HEIGHT,
-  CARD_RADIUS,
-  CARD_WIDTH,
-  PEEL_VIEW_MARGIN,
-} from '../constants'
+import { CARD_HEIGHT, CARD_WIDTH, PEEL_VIEW_MARGIN } from '../constants'
 import type { CardFlipState } from '../hooks/useCardFlip'
 import { usePreventNativeTouchScroll } from '../hooks/usePreventNativeTouchScroll'
 import { CardFront } from './CardFront'
@@ -62,7 +57,7 @@ export const Card = forwardRef<HTMLCanvasElement, CardProps>(function Card(
       style={{
         width: outerW,
         height: outerH,
-        borderRadius: flipInteraction ? 0 : CARD_RADIUS,
+        borderRadius: 0,
         overflow: flipInteraction ? 'visible' : 'hidden',
       }}
     >

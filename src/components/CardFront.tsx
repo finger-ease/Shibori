@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import type { AppPhase } from '../types'
-import { CARD_HEIGHT, CARD_RADIUS, CARD_WIDTH } from '../constants'
+import { CARD_HEIGHT, CARD_WIDTH } from '../constants'
 import { DrawingCanvas } from './DrawingCanvas'
 
 type CardFrontProps = {
@@ -20,7 +20,7 @@ export const CardFront = forwardRef<HTMLCanvasElement, CardFrontProps>(
         style={{
           width: CARD_WIDTH,
           height: CARD_HEIGHT,
-          borderRadius: CARD_RADIUS,
+          borderRadius: 0,
           boxShadow:
             'inset 0 0 0 1px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.08)',
           pointerEvents: hidePointer ? 'none' : 'auto',

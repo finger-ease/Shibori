@@ -1,7 +1,8 @@
 /** トランプ風カード（px） */
 export const CARD_WIDTH = 240
 export const CARD_HEIGHT = 336
-export const CARD_RADIUS = 14
+/** カードの角丸（px）。0 で直角 */
+export const CARD_RADIUS = 0
 
 /**
  * めくり方向への変位がこの px に達すると peelProgress が 1（全開）。

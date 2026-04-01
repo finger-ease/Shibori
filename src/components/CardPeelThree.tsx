@@ -223,7 +223,7 @@ export function CardPeelThree({
         style={{
           width: viewW,
           height: viewH,
-          borderRadius: 14,
+          borderRadius: 0,
           display: 'block',
         }}
       >
