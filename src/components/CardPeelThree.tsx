@@ -39,7 +39,9 @@ const peelFrag = /* glsl */ `
   varying vec2 vUv;
   varying vec3 vNormal;
   void main() {
-    vec4 cFront = texture2D(frontMap, vUv);
+    /* 裏面から見える表面は同じ UV だと左右反転するため、手前側（裏面）のみ U 反転 */
+    vec2 uvFront = gl_FrontFacing ? vUv : vec2(1.0 - vUv.x, vUv.y);
+    vec4 cFront = texture2D(frontMap, uvFront);
     /* キャンバスは未描画部が透明のため、表面は白ベースに合成する */
     vec3 frontOnWhite = mix(vec3(1.0), cFront.rgb, cFront.a);
     vec4 cBack = texture2D(backMap, vUv);
