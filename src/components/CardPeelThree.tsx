@@ -194,6 +194,9 @@ export function CardPeelThree({
     }
   }, [frontTexture])
 
+  const peelCursor =
+    flip.phase === 'flipping' ? 'grabbing' : flip.phase === 'faceDown' ? 'grab' : 'default'
+
   return (
     <div
       ref={containerRef}
@@ -202,14 +205,8 @@ export function CardPeelThree({
         width: viewW,
         height: viewH,
         touchAction: 'none',
-        cursor:
-          flip.phase === 'flipping'
-            ? 'grabbing'
-            : flip.phase === 'faceDown'
-              ? 'grab'
-              : 'default',
+        cursor: 'default',
       }}
-      {...pointerHandlers}
     >
       <Canvas
         orthographic
@@ -225,6 +222,7 @@ export function CardPeelThree({
           height: viewH,
           borderRadius: 0,
           display: 'block',
+          cursor: 'default',
         }}
       >
         <FitOrthoCamera />
@@ -234,6 +232,17 @@ export function CardPeelThree({
           backTexture={backTexture}
         />
       </Canvas>
+      {/** つかみカーソルはカード矩形のみ。余白は Canvas 側の default カーソル */}
+      <div
+        className="absolute left-1/2 top-1/2 z-[2] -translate-x-1/2 -translate-y-1/2 touch-none select-none"
+        style={{
+          width: CARD_WIDTH,
+          height: CARD_HEIGHT,
+          touchAction: 'none',
+          cursor: peelCursor,
+        }}
+        {...pointerHandlers}
+      />
     </div>
   )
 }

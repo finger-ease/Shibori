@@ -98,19 +98,27 @@ export function useCardFlip() {
   const handleFlipPointerDown = useCallback(
     (e: React.PointerEvent) => {
       if (flip.phase !== 'faceDown') return
-      e.preventDefault()
-      e.currentTarget.setPointerCapture(e.pointerId)
 
       const rect = e.currentTarget.getBoundingClientRect()
-      dragStartRef.current = { x: e.clientX, y: e.clientY }
-
       const localX = e.clientX - rect.left
       const localY = e.clientY - rect.top
-      /** 伏せ／めくり UI はカードより大きいので、座標をカード矩形上に射影してから辺・角を決める */
       const padX = (rect.width - CARD_WIDTH) / 2
       const padY = (rect.height - CARD_HEIGHT) / 2
-      const cardX = Math.max(0, Math.min(CARD_WIDTH, localX - padX))
-      const cardY = Math.max(0, Math.min(CARD_HEIGHT, localY - padY))
+      /** 視野余白（PEEL_VIEW_MARGIN）上のダウンではつかみを開始しない */
+      const onCard =
+        localX >= padX &&
+        localX <= padX + CARD_WIDTH &&
+        localY >= padY &&
+        localY <= padY + CARD_HEIGHT
+      if (!onCard) return
+
+      e.preventDefault()
+      e.currentTarget.setPointerCapture(e.pointerId)
+      dragStartRef.current = { x: e.clientX, y: e.clientY }
+
+      /** カード矩形内の座標で辺・角を決める */
+      const cardX = localX - padX
+      const cardY = localY - padY
       const peelEdge = determinePeelEdge(cardX, cardY, CARD_WIDTH, CARD_HEIGHT)
 
       setFlip({

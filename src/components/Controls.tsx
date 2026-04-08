@@ -108,7 +108,7 @@ export function Controls({
         : 'このページのリンクを共有'
 
   return (
-    <div className="relative z-10 flex shrink-0 flex-wrap items-center justify-center gap-4 px-4 pb-6 pt-2 sm:pb-10">
+    <div className="relative z-20 flex shrink-0 flex-wrap items-center justify-center gap-4 px-4 pb-6 pt-2 sm:pb-10">
       {showClearDrawing && (
         <div
           role="group"
