@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
+  encodeShareHash,
   parseShareStateFromHash,
   type Stroke,
   replaceUrlShareHash,
@@ -87,6 +88,11 @@ export function useDrawing(options: UseDrawingOptions) {
   const style = useMemo(
     () => ({ lineWidth, strokeStyle }),
     [lineWidth, strokeStyle],
+  )
+
+  const shareFragment = useMemo(
+    () => encodeShareHash(strokes, shareFaceDown),
+    [strokes, shareFaceDown],
   )
 
   useEffect(() => {
@@ -284,6 +290,8 @@ export function useDrawing(options: UseDrawingOptions) {
 
   return {
     strokes,
+    /** 現在の描画・伏せ状態に対応する #d=…（空のときは ''） */
+    shareFragment,
     clearCanvas,
     clearDrawingHistory,
     undo,

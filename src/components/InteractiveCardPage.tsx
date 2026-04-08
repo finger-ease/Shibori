@@ -18,6 +18,7 @@ export function InteractiveCardPage() {
     canUndo,
     canRedo,
     sharePageUrl,
+    shareFragment,
     pointerHandlers: drawingPointerHandlers,
   } = useDrawing({
     enabled: drawingEnabled,
@@ -99,7 +100,9 @@ export function InteractiveCardPage() {
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
         <header className="shrink-0 px-6 pt-6 text-center sm:px-10 sm:pt-8 md:px-14">
           <h1 className="mb-2 text-2xl font-bold tracking-tight text-emerald-100/95 drop-shadow-md md:text-3xl">
-            <a href="/Shibori/">Shibori</a>
+            <a href={`${import.meta.env.BASE_URL}${shareFragment}`}>
+              Shibori
+            </a>
           </h1>
           <p className="mx-auto max-w-md text-sm text-emerald-200/75">
             トランプに好きな文字や絵を描いて、バカラのようにしぼろう！

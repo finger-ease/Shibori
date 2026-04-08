@@ -1,3 +1,4 @@
+import { useShareHashFromLocation } from '../hooks/useShareHashFromLocation'
 import { SurfaceCard } from './SurfaceCard'
 
 const siteLinks = [
@@ -42,6 +43,9 @@ const woodFrameShadow =
   'inset 0 2px 4px rgba(255,255,255,0.12), inset 0 -3px 8px rgba(0,0,0,0.4)'
 
 export function LandingPage() {
+  const shareHash = useShareHashFromLocation()
+  const playHref = shareHash ? `?play${shareHash}` : '?play'
+
   return (
     <div
       className="flex h-[100dvh] w-full flex-col overflow-hidden"
@@ -84,7 +88,7 @@ export function LandingPage() {
               遊び方
             </a>
             <a
-              href="?play"
+              href={playHref}
               className="text-emerald-100/80 transition hover:text-emerald-50"
             >
               プレイ
@@ -123,7 +127,7 @@ export function LandingPage() {
 
                   <div className="mt-8 flex flex-wrap gap-3">
                     <a
-                      href="?play"
+                      href={playHref}
                       className="inline-flex items-center justify-center rounded-full border border-amber-800/50 bg-gradient-to-b from-amber-500 to-amber-700 px-5 py-3 text-sm font-semibold text-amber-50 shadow-lg shadow-amber-950/25 transition hover:brightness-110"
                     >
                       プレイ
