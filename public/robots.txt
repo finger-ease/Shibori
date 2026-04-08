@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://finger-ease.github.io/Shibori/sitemap.xml

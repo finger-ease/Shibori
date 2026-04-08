@@ -1,5 +1,13 @@
 @import 'tailwindcss';
 
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
@@ -21,6 +29,8 @@ body {
 }
 
 body {
+  background: #173422;
+  color: #f3f7f3;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
