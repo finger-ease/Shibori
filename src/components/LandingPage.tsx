@@ -73,7 +73,13 @@ export function LandingPage() {
       }}
     >
       <header className="relative z-20 shrink-0 border-b border-white/[0.06] bg-black px-5 py-4 sm:px-8 lg:px-12">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3">
+          <a
+            href="/"
+            className="text-lg font-bold tracking-tight text-emerald-50 drop-shadow-sm transition hover:text-emerald-100 md:text-xl"
+          >
+            Shibori
+          </a>
           <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
             <a
               href="#overview"
