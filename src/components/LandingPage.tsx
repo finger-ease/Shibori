@@ -75,7 +75,7 @@ export function LandingPage() {
       <header className="relative z-20 shrink-0 border-b border-white/[0.06] bg-black px-5 py-4 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3">
           <a
-            href="/"
+            href="/Shibori/"
             className="text-lg font-bold tracking-tight text-emerald-50 drop-shadow-sm transition hover:text-emerald-100 md:text-xl"
           >
             Shibori
