@@ -118,28 +118,21 @@ export function LandingPage() {
 
         <main className="absolute inset-[10px] z-10 min-h-0 overflow-x-hidden overflow-y-auto overscroll-y-contain rounded-[22px] px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-7">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 pb-2">
-            <section
-              id="overview"
-              className="scroll-mt-4 rounded-[32px] border border-white/10 bg-black/18 p-7 shadow-[0_28px_90px_rgba(0,0,0,0.24)] backdrop-blur-sm sm:p-9"
-            >
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(18rem,0.8fr)] lg:items-start">
-                <div>
-                  <h1 className="mt-4 text-4xl font-bold tracking-tight text-emerald-50 sm:text-5xl">
-                    Shibori
-                  </h1>
-                  <p className="mt-5 max-w-2xl text-base leading-8 text-emerald-100/85">
-                    トランプに好きな文字や絵を描いて、バカラのようにしぼろう！
-                  </p>
+            <section id="overview" className="scroll-mt-4">
+              <h1 className="text-4xl font-bold tracking-tight text-emerald-50 sm:text-5xl">
+                Shibori
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-emerald-100/85">
+                トランプに好きな文字や絵を描いて、バカラのようにしぼろう！
+              </p>
 
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <a
-                      href={playHref}
-                      className="inline-flex items-center justify-center rounded-full border border-amber-800/50 bg-gradient-to-b from-amber-500 to-amber-700 px-5 py-3 text-sm font-semibold text-amber-50 shadow-lg shadow-amber-950/25 transition hover:brightness-110"
-                    >
-                      プレイ
-                    </a>
-                  </div>
-                </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href={playHref}
+                  className="inline-flex items-center justify-center rounded-full border border-amber-800/50 bg-gradient-to-b from-amber-500 to-amber-700 px-5 py-3 text-sm font-semibold text-amber-50 shadow-lg shadow-amber-950/25 transition hover:brightness-110"
+                >
+                  プレイ
+                </a>
               </div>
             </section>
 
