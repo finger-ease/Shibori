@@ -59,7 +59,7 @@ export function InteractiveCardPage() {
 
   return (
     <div
-      className="relative flex min-h-[100dvh] w-full flex-col"
+      className="relative flex h-[100dvh] w-full flex-col overflow-hidden"
       style={{
         backgroundColor: '#1a2f1f',
         backgroundImage: `
