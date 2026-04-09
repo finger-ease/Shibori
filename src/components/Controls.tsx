@@ -1,3 +1,5 @@
+import { isMobileDevice } from '../shareUrl'
+
 type ControlsProps = {
   onClearDrawing: () => void
   onUndo: () => void
@@ -100,12 +102,23 @@ export function Controls({
   showReset,
 }: ControlsProps) {
   const shareSuccess = shareFeedback !== 'idle'
+  const mobile = isMobileDevice()
   const shareAriaLabel =
     shareFeedback === 'copied'
       ? 'リンクをコピーしました'
       : shareFeedback === 'shared'
+        ? 'リンクを共有しました'
+        : mobile
+          ? 'このページのリンクを共有'
+          : 'このページのリンクをコピー'
+  const shareButtonLabel =
+    shareFeedback === 'copied'
+      ? 'コピーしました'
+      : shareFeedback === 'shared'
         ? '共有しました'
-        : 'このページのリンクを共有'
+        : mobile
+          ? 'リンクを共有'
+          : 'リンクをコピー'
 
   return (
     <div className="relative z-20 flex shrink-0 flex-wrap items-center justify-center gap-4 px-4 pb-6 pt-2 sm:pb-10">
@@ -151,13 +164,16 @@ export function Controls({
           onClick={onShareLink}
           aria-label={shareAriaLabel}
           title={shareAriaLabel}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-slate-500/55 bg-slate-800/95 text-slate-200 shadow-md transition hover:bg-slate-700/95 hover:border-slate-400/50 active:scale-[0.96]"
+          className="flex h-12 shrink-0 items-center gap-2 rounded-full border-2 border-slate-500/55 bg-slate-800/95 px-4 text-slate-200 shadow-md transition hover:bg-slate-700/95 hover:border-slate-400/50 active:scale-[0.96] sm:px-5"
         >
           {shareSuccess ? (
-            <CheckGlyph className="h-6 w-6" />
+            <CheckGlyph className="h-6 w-6 shrink-0" />
           ) : (
-            <ShareGlyph className="h-6 w-6" />
+            <ShareGlyph className="h-6 w-6 shrink-0" />
           )}
+          <span className="text-sm font-semibold whitespace-nowrap">
+            {shareButtonLabel}
+          </span>
         </button>
       )}
       {showReset && (
