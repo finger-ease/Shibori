@@ -106,9 +106,9 @@ export function InteractiveCardPage() {
           </h1>
           <p className="mx-auto max-w-md text-sm text-emerald-200/75">
             {flip.phase === 'drawing'
-              ? 'トランプに好きな文字や絵を描こう！'
+              ? 'トランプに好きな文字や絵を描いて伏せよう！'
               : flip.phase === 'revealed'
-                ? 'このカードを友達にも共有しよう！'
+                ? 'このカードを友だちにも共有しよう！'
                 : 'トランプをドラッグしてバカラのようにしぼろう！'}
           </p>
         </header>
