@@ -47,7 +47,43 @@
       crossorigin="anonymous"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main
+        style="max-width: 960px; margin: 0 auto; padding: 24px; line-height: 1.75; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #0f172a;"
+      >
+        <h1 style="font-size: 2rem; margin: 0 0 12px;">Shibori</h1>
+        <p style="margin: 0 0 20px;">
+          トランプに好きな文字や絵を描いて、バカラのようにしぼる Web ゲームです。
+        </p>
+
+        <section style="margin: 0 0 20px;">
+          <h2 style="font-size: 1.2rem; margin: 0 0 8px;">遊び方</h2>
+          <ol style="margin: 0; padding-left: 1.3rem;">
+            <li>トランプの表面に、好きな文字や絵を描きます。</li>
+            <li>伏せるボタンを押して、カードを裏返します。</li>
+            <li>裏面をドラッグして、カードをしぼります。</li>
+            <li>共有ボタンで URL をコピーして、友だちに共有できます。</li>
+          </ol>
+        </section>
+
+        <section style="margin: 0 0 20px;">
+          <h2 style="font-size: 1.2rem; margin: 0 0 8px;">このページでできること</h2>
+          <p style="margin: 0;">
+            ブラウザだけで手描きカードを作成し、共有リンク経由で同じカード状態を再現できます。
+          </p>
+        </section>
+
+        <p style="margin: 0;">
+          <a href="?play">プレイする</a>
+          ・
+          <a href="terms/">利用規約 / Terms</a>
+          ・
+          <a href="privacy/">プライバシーポリシー / Privacy Policy</a>
+          ・
+          <a href="https://github.com/finger-ease/Shibori">GitHub</a>
+        </p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

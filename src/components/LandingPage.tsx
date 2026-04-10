@@ -1,20 +1,7 @@
+import { SiteFooter } from './SiteFooter'
+import { SiteHeader } from './SiteHeader'
 import { useShareHashFromLocation } from '../hooks/useShareHashFromLocation'
 import { SurfaceCard } from './SurfaceCard'
-
-const siteLinks = [
-  {
-    label: '© 2026 fingerEase',
-    href: 'https://finger-ease.github.io/',
-  },
-  {
-    label: '利用規約 / Terms',
-    href: 'https://finger-ease.github.io/terms',
-  },
-  {
-    label: 'GitHub',
-    href: 'https://github.com/finger-ease/Shibori',
-  },
-] as const
 
 const steps = [
   {
@@ -45,6 +32,20 @@ const woodFrameShadow =
 export function LandingPage() {
   const shareHash = useShareHashFromLocation()
   const playHref = shareHash ? `?play${shareHash}` : '?play'
+  const headerLinks = [
+    {
+      label: '概要',
+      href: '#overview',
+    },
+    {
+      label: '遊び方',
+      href: '#how-to',
+    },
+    {
+      label: 'プレイ',
+      href: playHref,
+    },
+  ] as const
 
   return (
     <div
@@ -72,36 +73,7 @@ export function LandingPage() {
         boxShadow: 'inset 0 0 120px rgba(0,0,0,0.35)',
       }}
     >
-      <header className="relative z-20 shrink-0 border-b border-white/[0.06] bg-black px-5 py-4 sm:px-8 lg:px-12">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3">
-          <a
-            href="/Shibori/"
-            className="text-lg font-bold tracking-tight text-emerald-50 drop-shadow-sm transition hover:text-emerald-100 md:text-xl"
-          >
-            Shibori
-          </a>
-          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-            <a
-              href="#overview"
-              className="text-emerald-100/80 transition hover:text-emerald-50"
-            >
-              概要
-            </a>
-            <a
-              href="#how-to"
-              className="text-emerald-100/80 transition hover:text-emerald-50"
-            >
-              遊び方
-            </a>
-            <a
-              href={playHref}
-              className="text-emerald-100/80 transition hover:text-emerald-50"
-            >
-              プレイ
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader links={headerLinks} />
 
       <div className="relative mx-3 mt-2 mb-2 min-h-0 flex-1 overflow-hidden rounded-[32px] sm:mx-4 lg:mx-6">
         <div
@@ -159,21 +131,7 @@ export function LandingPage() {
         </main>
       </div>
 
-      <footer className="relative z-20 shrink-0 border-t border-white/[0.06] bg-black px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8 lg:px-12">
-        <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-          {siteLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-emerald-100/75 transition hover:text-emerald-50"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
