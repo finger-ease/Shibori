@@ -18,13 +18,54 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - run: npm run build
+      - name: Generate redirect site
+        run: |
+          mkdir -p dist
+          cat > dist/index.html <<'HTML'
+          <!DOCTYPE html>
+          <html lang="ja">
+            <head>
+              <meta charset="UTF-8" />
+              <title>Shibori — 移転しました / Moved</title>
+              <link rel="canonical" href="https://shibori-six.vercel.app/" />
+              <meta name="robots" content="noindex" />
+              <meta http-equiv="refresh" content="0; url=https://shibori-six.vercel.app/" />
+              <script>
+                (function () {
+                  var target = 'https://shibori-six.vercel.app';
+                  var path = location.pathname.replace(/^\/Shibori\/?/, '/');
+                  if (path.charAt(0) !== '/') path = '/' + path;
+                  location.replace(target + path + location.search + location.hash);
+                })();
+              </script>
+              <style>
+                body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; line-height: 1.6; max-width: 40rem; margin: 0 auto; }
+                a { color: #2563eb; }
+              </style>
+            </head>
+            <body>
+              <h1>Shibori は移転しました</h1>
+              <p>新しいURL: <a id="manual" href="https://shibori-six.vercel.app/">https://shibori-six.vercel.app/</a></p>
+              <p>自動で移動しない場合は上のリンクをクリックしてください。</p>
+              <hr />
+              <h2 lang="en">Shibori has moved</h2>
+              <p lang="en">New URL: <a href="https://shibori-six.vercel.app/">https://shibori-six.vercel.app/</a></p>
+              <script>
+                (function () {
+                  var link = document.getElementById('manual');
+                  if (!link) return;
+                  var target = 'https://shibori-six.vercel.app';
+                  var path = location.pathname.replace(/^\/Shibori\/?/, '/');
+                  if (path.charAt(0) !== '/') path = '/' + path;
+                  var dest = target + path + location.search + location.hash;
+                  link.href = dest;
+                  link.textContent = dest;
+                })();
+              </script>
+            </body>
+          </html>
+          HTML
+          cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
