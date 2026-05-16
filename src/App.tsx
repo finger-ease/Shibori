@@ -1,7 +1,17 @@
-import { InteractiveCardPage } from './components/InteractiveCardPage'
+import { lazy, Suspense } from 'react'
 import { LandingPage } from './components/LandingPage'
-import { PrivacyPage } from './components/PrivacyPage'
-import { TermsPage } from './components/TermsPage'
+
+const InteractiveCardPage = lazy(() =>
+  import('./components/InteractiveCardPage').then((m) => ({
+    default: m.InteractiveCardPage,
+  })),
+)
+const PrivacyPage = lazy(() =>
+  import('./components/PrivacyPage').then((m) => ({ default: m.PrivacyPage })),
+)
+const TermsPage = lazy(() =>
+  import('./components/TermsPage').then((m) => ({ default: m.TermsPage })),
+)
 
 function App() {
   const pathname =
@@ -11,18 +21,34 @@ function App() {
     : pathname
 
   if (normalizedPath.endsWith('/terms')) {
-    return <TermsPage />
+    return (
+      <Suspense fallback={null}>
+        <TermsPage />
+      </Suspense>
+    )
   }
 
   if (normalizedPath.endsWith('/privacy')) {
-    return <PrivacyPage />
+    return (
+      <Suspense fallback={null}>
+        <PrivacyPage />
+      </Suspense>
+    )
   }
 
   const isPlayEnabled =
     typeof window !== 'undefined' &&
     new URLSearchParams(window.location.search).has('play')
 
-  return isPlayEnabled ? <InteractiveCardPage /> : <LandingPage />
+  if (isPlayEnabled) {
+    return (
+      <Suspense fallback={null}>
+        <InteractiveCardPage />
+      </Suspense>
+    )
+  }
+
+  return <LandingPage />
 }
 
 export default App
