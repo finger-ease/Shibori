@@ -9,7 +9,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 800,
     rolldownOptions: {
       output: {
-        advancedChunks: {
+        codeSplitting: {
           groups: [
             { name: 'three', test: /[\\/]node_modules[\\/]three[\\/]/ },
             {
