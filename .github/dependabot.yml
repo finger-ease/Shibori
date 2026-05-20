@@ -5,9 +5,59 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
+    groups:
+      react:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+          - "@vitejs/plugin-react"
+          - "eslint-plugin-react-*"
+      three:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "three"
+          - "@types/three"
+          - "@react-three/*"
+      eslint:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+          - "globals"
+      tailwind:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+      typescript:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "typescript"
+          - "@types/*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "*"
